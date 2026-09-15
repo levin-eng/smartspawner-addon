@@ -1,0 +1,108 @@
+# =========================================================
+# SpawnerUpgrades configuration
+# =========================================================
+
+# How to open the menu:
+#   Shift + right-click a spawner block  -> opens the Upgrade menu
+#   Plain right-click                    -> untouched, opens SmartSpawner's own menu as normal
+menu-title: "&8Spawner Upgrades"
+
+# -----------------------------------------------------------------
+# CURRENCY
+# Pick exactly one mode. This is the only thing you need to change
+# to switch between real money, a scoreboard "gems" stat, or a
+# dedicated currency plugin like BeastTokens / TokenManager / PlayerPoints.
+# -----------------------------------------------------------------
+currency:
+  # vault        -> uses your Vault-linked economy plugin's real money (e.g. EssentialsX)
+  # scoreboard    -> uses a vanilla scoreboard objective (e.g. the "gems" one from earlier)
+  # command       -> generic: works with ANY currency plugin by reading a PlaceholderAPI
+  #                  balance placeholder and running give/take commands
+  mode: vault
+
+  display-name: "Gems"
+
+  vault:
+    # No extra settings needed, Vault handles it automatically.
+    format-placeholder: "%vault_eco_balance_formatted%" # optional, only used for on-screen display
+
+  scoreboard:
+    objective: "gems"
+
+  command:
+    # Balance must resolve to a plain number via PlaceholderAPI (no colors/formatting)
+    balance-placeholder: "%beasttokens_gems%"
+    give-command: "beasttokensadmin add gems %player% %amount%"
+    take-command: "beasttokensadmin remove gems %player% %amount%"
+
+# -----------------------------------------------------------------
+# APPLYING THE EFFECT TO SMARTSPAWNER
+# SmartSpawner tracks spawn delay / drop amount internally, not via
+# vanilla spawner NBT, so the only stable way to change it from an
+# addon is via SmartSpawner's own admin command.
+#
+# Run "/ss admin help" (or check the SmartSpawner docs for your
+# installed version) to find the exact command name and argument
+# order, then fill in the templates below. Leave dry-run: true
+# until you've confirmed the command actually changes the spawner,
+# it will just log what it WOULD run instead of running it.
+# -----------------------------------------------------------------
+apply:
+  dry-run: true
+  spawn-delay-command: "ss admin setproperty %world% %x% %y% %z% min-spawn-delay %value%"
+  drop-amount-command: "ss admin setproperty %world% %x% %y% %z% spawn-count %value%"
+
+# -----------------------------------------------------------------
+# UPGRADE TRACKS
+# Each level's "cost" is what the player pays to go from the
+# previous level to this one. "value" is what gets substituted
+# into %value% in the apply commands above.
+# -----------------------------------------------------------------
+upgrades:
+  spawn_delay:
+    display-name: "Spawn Rate"
+    description: "Lowers the delay between spawns (in ticks, 20 = 1 second)"
+    levels:
+      - level: 1
+        cost: 500
+        value: 180
+      - level: 2
+        cost: 1200
+        value: 150
+      - level: 3
+        cost: 2500
+        value: 120
+      - level: 4
+        cost: 5000
+        value: 90
+      - level: 5
+        cost: 10000
+        value: 60
+
+  drop_amount:
+    display-name: "Drop Amount"
+    description: "Increases how many items/mobs are rolled per spawn cycle"
+    levels:
+      - level: 1
+        cost: 500
+        value: 2
+      - level: 2
+        cost: 1200
+        value: 3
+      - level: 3
+        cost: 2500
+        value: 4
+      - level: 4
+        cost: 5000
+        value: 5
+      - level: 5
+        cost: 10000
+        value: 6
+
+messages:
+  no-permission: "&cYou don't have permission to do that."
+  not-a-spawner: "&cYou need to be looking at a spawner to do that."
+  max-level: "&eThis upgrade is already at its maximum level."
+  not-enough-currency: "&cYou need %cost% more %currency% to buy this upgrade."
+  purchased: "&aUpgraded %upgrade% to level %level%!"
+  reloaded: "&aSpawnerUpgrades config reloaded."

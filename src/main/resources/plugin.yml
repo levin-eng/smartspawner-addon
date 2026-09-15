@@ -1,0 +1,22 @@
+name: SpawnerUpgrades
+version: '1.0.0'
+main: com.example.spawnerupgrades.SpawnerUpgradesPlugin
+api-version: '1.21'
+author: You
+description: Adds a paid upgrade menu (spawn rate + drop amount) on top of SmartSpawner.
+softdepend: [SmartSpawner, Vault, PlaceholderAPI]
+
+commands:
+  spawnerupgrades:
+    description: Admin commands for SpawnerUpgrades
+    aliases: [su, supgrades]
+    permission: spawnerupgrades.admin
+    usage: "/<command> reload"
+
+permissions:
+  spawnerupgrades.use:
+    description: Allows opening and using the spawner upgrade menu
+    default: true
+  spawnerupgrades.admin:
+    description: Allows reloading and administrating SpawnerUpgrades
+    default: op
